@@ -1,6 +1,7 @@
 # nf-reproducible-rnaseq
 
 A **Nextflow DSL2 bulk RNA-seq pipeline** demonstrating **nf-core–style design principles** with **simple, readable branching** for **STAR (alignment-based)** and **Salmon (alignment-free)** quantification.
+This repository contains the workflow logic only; all biological data and references are user-provided.
 
 Ideas behind the repo -
 * Showcase **Nextflow + nf-core best practices**
@@ -20,6 +21,25 @@ Ideas behind the repo -
 
 ---
 
+## Repository structure
+
+```
+nf-reproducible-rnaseq/
+├── main.nf                 # Main Nextflow DSL2 pipeline
+├── nextflow.config         # Profiles (local / conda / HPC-ready)
+├── README.md               # This file
+├── scripts/
+│   ├── deseq2.R            # DEG for STAR + featureCounts branch
+│   └── salmon_deseq2.R     # DEG for Salmon branch (tximport-style)
+├── envs/
+│   └── environment.yml     # Conda environment (optional)
+├── raw_fastq/              # Input FASTQ files (user-provided)
+├── reference/              # Reference indices (user-provided)
+│   ├── star_index/
+│   ├── salmon_index/
+│   └── annotation.gtf
+└── metadata.csv            # Sample metadata (user-provided)
+```
 
 
 ## Supported analysis paths
