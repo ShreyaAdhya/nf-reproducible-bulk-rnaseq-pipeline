@@ -38,7 +38,9 @@ nf-reproducible-rnaseq/
 │   ├── star_index/
 │   ├── salmon_index/
 │   └── annotation.gtf
-└── metadata.csv            # Sample metadata (user-provided)
+│── metadata.csv            # Sample metadata (user-provided)
+└── tx2gene.csv             # (user-provided)
+
 ```
 
 
