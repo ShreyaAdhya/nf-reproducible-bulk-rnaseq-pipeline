@@ -101,6 +101,18 @@ sample4,Treated
 
 ---
 
+### tx2gene.csv file for Salmon branch
+
+Example:
+
+```csv
+transcript,gene
+ENST00000456328,ENSG00000223972
+ENST00000450305,ENSG00000223972
+```
+---
+
+
 ## Reference requirements
 
 ### STAR branch
