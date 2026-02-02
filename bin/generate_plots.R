@@ -1,15 +1,18 @@
-library(DESeq2)
-library(plotly)
-library(ggplot2)
+meta <- read.csv("samplesheet.csv")
 
-counts <- read.table("gene_counts.txt", header=TRUE, row.names=1)
-
-pca <- prcomp(t(counts), scale.=TRUE)
-p <- plot_ly(
-  x = pca$x[,1],
-  y = pca$x[,2],
-  type = "scatter",
-  mode = "markers"
+dds <- DESeqDataSetFromMatrix(
+  countData = counts,
+  colData   = meta,
+  design    = ~ batch + condition
 )
 
-htmlwidgets::saveWidget(p, "PCA_interactive.html")
+pca <- plotPCA(vst(dds), intgroup = c("condition", "batch"), returnData=TRUE)
+
+plot_ly(
+  data = pca,
+  x = ~PC1,
+  y = ~PC2,
+  color = ~condition,
+  symbol = ~batch,
+  text = ~sample
+)
