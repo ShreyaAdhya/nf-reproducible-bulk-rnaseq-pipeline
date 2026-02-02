@@ -8,11 +8,7 @@ workflow RNASEQ_WORKFLOW {
         def meta = [
             id          : row.sample,
             sample      : row.sample,
-            condition   : row.condition,
-            group       : row.group,
-            replicate   : row.replicate as Integer,
-            batch       : row.batch,
-            strandedness: row.strandedness
+            condition   : row.condition
         ]
 
         tuple(
