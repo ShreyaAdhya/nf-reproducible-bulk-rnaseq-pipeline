@@ -1,12 +1,28 @@
 workflow RNASEQ_WORKFLOW {
 
     Channel
-        .fromPath(params.samplesheet)
-        .splitCsv(header:true)
-        .map { row ->
-            tuple(row.sample, file(row.fastq_1), file(row.fastq_2))
-        }
-        .set { samples_ch }
+    .fromPath(params.input)
+    .splitCsv(header:true)
+    .map { row ->
+
+        def meta = [
+            id          : row.sample,
+            sample      : row.sample,
+            condition   : row.condition,
+            group       : row.group,
+            replicate   : row.replicate as Integer,
+            batch       : row.batch,
+            strandedness: row.strandedness
+        ]
+
+        tuple(
+            meta,
+            file(row.fastq_1),
+            file(row.fastq_2)
+        )
+    }
+    .set { ch_reads }
+
 
     FASTQC(samples_ch)
     FASTP(samples_ch)
