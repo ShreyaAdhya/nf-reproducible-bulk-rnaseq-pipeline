@@ -1,5 +1,7 @@
 Example format
 
-sample,fastq_1,fastq_2
-S1,data/S1_R1.fastq.gz,data/S1_R2.fastq.gz
-S2,data/S2_R1.fastq.gz,data/S2_R2.fastq.gz
+sample,fastq_1,fastq_2,strandedness,condition,group,replicate,batch
+S1,data/S1_R1.fastq.gz,data/S1_R2.fastq.gz,forward,Control,CTRL,1,B1
+S2,data/S2_R1.fastq.gz,data/S2_R2.fastq.gz,forward,Treated,TRT,1,B1
+S3,data/S3_R1.fastq.gz,data/S3_R2.fastq.gz,forward,Control,CTRL,2,B2
+
