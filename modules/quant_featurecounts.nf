@@ -1,18 +1,20 @@
 process FEATURECOUNTS {
 
+    tag "featurecounts"
     publishDir "results/counts", mode: 'copy'
 
     input:
-    tuple val(sample), path(bam)
+    path bams
 
     output:
-    path "gene_counts.txt"
+    path "gene_counts_matrix.tsv"
 
     script:
     """
     featureCounts \
       -a ${params.gtf} \
-      -o gene_counts.txt \
-      $bam
+      -o gene_counts_matrix.tsv \
+      -T ${task.cpus ?: 4} \
+      ${bams.join(' ')}
     """
 }
