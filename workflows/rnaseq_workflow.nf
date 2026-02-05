@@ -1,30 +1,41 @@
 workflow RNASEQ_WORKFLOW {
 
     Channel
-    .fromPath(params.input)
-    .splitCsv(header:true)
-    .map { row ->
+        .fromPath(params.samplesheet)
+        .splitCsv(header: true)
+        .map { row ->
 
-        def meta = [
-            id          : row.sample,
-            sample      : row.sample,
-            condition   : row.condition
-        ]
+            def meta = [
+                id        : row.sample,
+                sample    : row.sample,
+                condition : row.condition
+            ]
 
-        tuple(
-            meta,
-            file(row.fastq_1),
-            file(row.fastq_2)
-        )
-    }
-    .set { ch_reads }
+            // Construct full paths dynamically
+            def r1 = file("${params.fastq_dir}/${row.fastq_1}")
+            def r2 = file("${params.fastq_dir}/${row.fastq_2}")
 
+            tuple(
+                meta,
+                r1,
+                r2
+            )
+        }
+        .set { ch_reads }
 
-    FASTQC(samples_ch)
-    FASTP(samples_ch)
+    FASTP(ch_reads)
+    FASTQC(FASTP.out)
     STAR_ALIGN(FASTP.out)
     FEATURECOUNTS(STAR_ALIGN.out)
     RSEQC(STAR_ALIGN.out)
-    MULTIQC()
+
+    MULTIQC(
+        FASTQC.out,
+        FASTP.out,
+        STAR_ALIGN.out,
+        FEATURECOUNTS.out,
+        RSEQC.out
+    )
+
     INTERACTIVE_PLOTS(FEATURECOUNTS.out)
 }
