@@ -11,15 +11,15 @@ workflow RNASEQ_WORKFLOW {
                 condition : row.condition
             ]
 
-            // Construct full paths dynamically
             def r1 = file("${params.fastq_dir}/${row.fastq_1}")
             def r2 = file("${params.fastq_dir}/${row.fastq_2}")
 
-            tuple(
-                meta,
-                r1,
-                r2
-            )
+            // To check the fastq files first - fail here if absent
+            if( !r1.exists() || !r2.exists() ) {
+                error "Missing FASTQ for sample ${row.sample}: ${r1}, ${r2}"
+            }
+
+            tuple(meta, r1, r2)
         }
         .set { ch_reads }
 
@@ -36,6 +36,4 @@ workflow RNASEQ_WORKFLOW {
         FEATURECOUNTS.out,
         RSEQC.out
     )
-
-    INTERACTIVE_PLOTS(FEATURECOUNTS.out)
 }
